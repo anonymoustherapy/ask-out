@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For Gitesh 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 50px;
+      animation: fadeInDown 1s ease-in-out;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn {
+      padding: 20px 40px;
+      margin: 20px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease, transform 0.3s ease;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    #yesBtn {
+      background: #ff6f91;
+      color: #fff;
+    }
+
+    #yesBtn:hover {
+      background: #ff3e6c;
+      transform: scale(1.1);
+    }
+
+    #noBtn {
+      background: #f1f1f1;
+      color: #333;
+      position: absolute;
+      transition: left 0.2s ease, top 0.2s ease;
+    }
+
+    #noBtn:hover {
+      background: #ddd;
+    }
+
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: white;
+      padding: 40px 60px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      font-size: 1.5rem;
+      color: #ff3e6c;
+      text-align: center;
+      animation: popUp 0.5s forwards;
+      z-index: 10;
+    }
+
+    @keyframes popUp {
+      from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hey Gitesh 💕 Will you go out with me?</h1>
+    <button id="yesBtn" class="btn">Yes 💖</button>
+    <button id="noBtn" class="btn">No!</button>
+  </div>
+
+  <div id="popup">
+    aww 🥰 Can’t wait to meet my rasmalai again💖
+  </div>
+
+  <audio id="yesSound" src="aww.ogg" preload="auto"></audio>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const popup = document.getElementById("popup");
+    const container = document.querySelector(".container");
+
+    function moveNoBtn() {
+      const containerRect = container.getBoundingClientRect();
+      const yesRect = yesBtn.getBoundingClientRect();
+
+      const maxX = containerRect.width - noBtn.offsetWidth;
+      const maxY = containerRect.height - noBtn.offsetHeight;
+
+      let x, y, tries = 0;
+      do {
+        x = Math.random() * maxX;
+        y = Math.random() * maxY;
+        tries++;
+        if (tries > 20) break;
+      } while (
+        x < yesRect.right - containerRect.left &&
+        x + noBtn.offsetWidth > yesRect.left - containerRect.left &&
+        y < yesRect.bottom - containerRect.top &&
+        y + noBtn.offsetHeight > yesRect.top - containerRect.top
+      );
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    // Move only on hover (desktop) or touch (mobile)
+    noBtn.addEventListener("mouseenter", moveNoBtn); // desktop hover
+    noBtn.addEventListener("touchstart", (e) => { // mobile touch
+      e.preventDefault();
+      moveNoBtn();
+    });
+
+    yesBtn.addEventListener("click", () => {
+      const sound = document.getElementById("yesSound");
+      sound.currentTime = 0;
+      sound.play();
+      popup.style.display = "block";
+      confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+    });
+
+    // Initial placement
+    moveNoBtn();
+  </script>
+</body>
+</html>
